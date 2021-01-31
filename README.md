@@ -1,7 +1,9 @@
 # bash-persistent-history
 
 ## Background
-This is a hack to get a persistent history of bash commands across all terminal sessions (incl SSH connections into your box) with a few helper commands for subsequent searching
+This is a hack to get a persistent history of bash commands across all terminal sessions (incl SSH connections into your box) with a few helper commands for subsequent searching.
+
+Persistent history file is: `~/.history/persistent_history` 
 
 ## Helper aliases/functions:
 ```
