@@ -10,7 +10,7 @@ echo "Actions:"
 echo "  mkdir $HOME/.history"
 echo "  cp $SRC/.bash_ph $BASHPH"
 echo "  chmod +x $BASHPH"
-echo "  echo \" if [ -f $BASHPH ]; then . $BASHPH; fi \" >> $HOME/.bashrc"
+echo "  echo \"[ -f $BASHPH ] && . $BASHPH\" >> $HOME/.bashrc"
 echo ""
 read -p "OK? Press [Enter] to proceed, ctrl-c to cancel:"
 
