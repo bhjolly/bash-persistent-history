@@ -1,0 +1,38 @@
+#!/bin/bash
+
+# this is a hack to keep a running record of persistent history across all terminals for all time
+
+HISTFILE="${HOME}/.history/$( date '+%y%m%d_%H%M%S' ).$HOSTNAME.$$"
+
+log_bash_persistent_history()
+{
+    [[
+        $(history 1) =~ ^\ *([0-9]+)\ *+(.*)$
+    ]]
+    local date_part="$(date '+%Y-%m-%d %H:%M:%S')"
+    local num_part="$(printf %7s $$):$(printf %-4s ${BASH_REMATCH[1]})"
+    local command_part="${BASH_REMATCH[2]}"
+    if [ "$command_part" != "$PERSISTENT_HISTORY_LAST" ]
+    then
+        echo "$num_part | $date_part | $command_part" >> ~/.history/persistent_history
+        export PERSISTENT_HISTORY_LAST="$command_part"
+    fi
+}
+
+run_on_prompt_command()
+{
+        log_bash_persistent_history
+}
+
+PROMPT_COMMAND="run_on_prompt_command; $PROMPT_COMMAND"
+
+
+# helper aliases/functions:
+#   ph  - open your persistent history with 'more'
+#   gph - 'grep' your persistent history (e.g. 'gph vim' will give you every command containing 'vim')
+#   tph - 'tail' your peristsent history (can specify number of lines with '-xx')
+#   gpt - run 'gph' but restrict results to the most recent 32 entries
+alias ph='more ~/.history/persistent_history'
+alias gph='cat ~/.history/persistent_history|grep --color'
+alias tph='cat ~/.history/persistent_history | tail'
+gpt() { gph ${@} | tail -32; }
